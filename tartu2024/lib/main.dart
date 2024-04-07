@@ -1,70 +1,37 @@
 import 'package:flutter/material.dart';
-import 'place.dart';
+import 'models/attraction.dart';
+import 'attraction_details_page.dart';
+import 'package:tartu2024/models/attractions_data.dart';
 
 void main() {
-  runApp(App());
+  runApp(MaterialApp(home: AttractionsListPage()));
 }
 
-class App extends StatelessWidget {
-  final List<Place> places = [
-    Place(
-      name: 'Tartu Old Town',
-      description:
-          'The heart of Tartu, full of historical buildings, cafes, and shops.',
-      imageUrl: 'https://example.com/image1.jpg',
-    ),
-    Place(
-      name: 'Toome Hill',
-      description:
-          'A historic hill with great views over the city, perfect for walks and picnics.',
-      imageUrl: 'https://example.com/image2.jpg',
-    ),
-    // Add more places here
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: PlacesList(places: places),
-    );
-  }
-}
-
-class PlacesList extends StatelessWidget {
-  final List<Place> places;
-
-  PlacesList({required this.places});
-
+class AttractionsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Places to Visit in Tartu'),
+        title: Text("Tartu City Guide"),
       ),
       body: ListView.builder(
-        itemCount: places.length,
+        itemCount: attractions.length,
         itemBuilder: (context, index) {
-          final place = places[index];
+          final attraction = attractions[index];
           return ListTile(
-            title: Text(place.name),
-            subtitle: Text(place.description),
+            title: Text(attraction.name),
+            leading: Container(
+              width: 100, // Specify the width
+              height: 100, // Specify the height
+              child: Image.network(attraction.imageUrl, fit: BoxFit.cover),
+            ),
             onTap: () {
-              // Here you can navigate to a detailed page of the place
-              // For simplicity, we'll just show a dialog
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(place.name),
-                    content: Text(place.description),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text('Close'),
-                      ),
-                    ],
-                  );
-                },
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AttractionDetailsPage(attraction: attraction),
+                ),
               );
             },
           );
