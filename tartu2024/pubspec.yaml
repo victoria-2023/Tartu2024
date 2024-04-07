@@ -33,8 +33,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.1
-  google_maps_flutter: ^2.0.6
   share: ^2.0.4 # 
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+  video_player: ^2.1.12
 
   cupertino_icons: ^1.0.2
 

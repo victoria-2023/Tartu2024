@@ -1,12 +1,12 @@
-// lib/main.dart or wherever your AttractionsListPage is located
 import 'package:flutter/material.dart';
 import 'models/attraction.dart';
 import 'attraction_details_page.dart';
 import 'package:tartu2024/models/attractions_data.dart';
-import 'settings.dart'; // Make sure to import settings_page.dart
+import 'settings.dart';
+import 'welcome_page.dart';
 
 void main() {
-  runApp(MaterialApp(home: AttractionsListPage()));
+  runApp(MaterialApp(home: WelcomePage()));
 }
 
 class AttractionsListPage extends StatelessWidget {
