@@ -5,6 +5,8 @@ class Attraction {
   final String address;
   final String visitingHours;
   final String directions;
+  final double latitude; //
+  final double longitude; // A
 
   Attraction({
     required this.name,
@@ -13,5 +15,7 @@ class Attraction {
     required this.address,
     required this.visitingHours,
     required this.directions,
+    required this.latitude, //
+    required this.longitude, //
   });
 }
