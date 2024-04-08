@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'attraction_details_page.dart';
-import 'main.dart'; // Import the main.dart file if necessary
+import 'main.dart';
+import 'package:video_player/video_player.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -37,27 +38,56 @@ class WelcomePage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus faucibus tortor, suscipit velit phasellus massa.",
+                      "Tartu: A Haven for Explorers - Unlock Adventure, Wellness, and Serenity in Estonia's Playground!",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AttractionsListPage(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                    child: Container(
+                      width: double
+                          .infinity, // Ensure the container fills the width
+                      height: 60, // Set a fixed height for the button
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(4.0), // Border radius
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.blue.shade900, // Start color of the gradient
+                            Colors.blue.shade500, // End color of the gradient
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
                         ),
-                      );
-                    },
-                    child: Text('ENTER'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AttractionsListPage(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors
+                              .transparent, // Make the button's background transparent
+                          shadowColor: Colors.transparent, // No shadow
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
+                        ),
+                        child: Text(
+                          'ENTER',
+                          style: TextStyle(
+                              color: Colors.white), // Text color set to white
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -85,28 +115,33 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-      'https://youtu.be/6xgfdXJgcZA?si=lT6sljFdDtA4M0n6',
-    )..initialize().then((_) {
-        setState(() {});
+    // Initialize the controller with the local asset
+    _controller = VideoPlayerController.asset('assets/videos/welcome_video.mp4')
+      ..initialize().then((_) {
+        setState(
+            () {}); // Ensure the first frame is shown after the video is initialized
+        _controller
+            .play(); // Optionally play the video as soon as the widget is built
       });
-    _controller.setLooping(true);
-    _controller.play();
   }
 
   @override
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
         ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
+            aspectRatio: _controller
+                .value.aspectRatio, // Respect the video's aspect ratio
             child: VideoPlayer(_controller),
           )
-        : CircularProgressIndicator();
+        : Center(
+            child:
+                CircularProgressIndicator()); // Show loading spinner until the video is ready
   }
 
   @override
   void dispose() {
+    _controller
+        .dispose(); // Dispose the controller when the widget is removed from the widget tree
     super.dispose();
-    _controller.dispose();
   }
 }
