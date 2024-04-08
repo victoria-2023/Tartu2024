@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'attraction_details_page.dart';
-import 'main.dart';
 import 'package:video_player/video_player.dart';
+import 'main.dart'; // Make sure this points to your file with AttractionsListPage.
 
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
+      body: SafeArea(
+        // Wrap your content with SafeArea
+        child: Column(
+          children: [
+            Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -48,16 +46,14 @@ class WelcomePage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     child: Container(
-                      width: double
-                          .infinity, // Ensure the container fills the width
-                      height: 60, // Set a fixed height for the button
+                      width: double.infinity,
+                      height: 60,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(4.0), // Border radius
+                        borderRadius: BorderRadius.circular(4.0),
                         gradient: LinearGradient(
                           colors: [
-                            Colors.blue.shade900, // Start color of the gradient
-                            Colors.blue.shade500, // End color of the gradient
+                            Colors.blue.shade900,
+                            Colors.blue.shade500,
                           ],
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
@@ -73,9 +69,8 @@ class WelcomePage extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors
-                              .transparent, // Make the button's background transparent
-                          shadowColor: Colors.transparent, // No shadow
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
                           padding: EdgeInsets.symmetric(
                               horizontal: 40, vertical: 20),
                           shape: RoundedRectangleBorder(
@@ -84,8 +79,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                         child: Text(
                           'ENTER',
-                          style: TextStyle(
-                              color: Colors.white), // Text color set to white
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -93,12 +87,12 @@ class WelcomePage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: VideoPlayerScreen(),
-          ),
-        ],
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: VideoPlayerScreen(), // The Video Player section
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -115,33 +109,24 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the controller with the local asset
-    _controller = VideoPlayerController.asset('assets/videos/welcome_video.mp4')
+    _controller = VideoPlayerController.asset('assets/welcome_video.mp4')
       ..initialize().then((_) {
-        setState(
-            () {}); // Ensure the first frame is shown after the video is initialized
-        _controller
-            .play(); // Optionally play the video as soon as the widget is built
+        setState(() {}); // Rebuild the widget after video is initialized.
+        _controller.play();
+        _controller.setLooping(true);
       });
   }
 
   @override
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller
-                .value.aspectRatio, // Respect the video's aspect ratio
-            child: VideoPlayer(_controller),
-          )
-        : Center(
-            child:
-                CircularProgressIndicator()); // Show loading spinner until the video is ready
+        ? VideoPlayer(_controller)
+        : Center(child: CircularProgressIndicator());
   }
 
   @override
   void dispose() {
-    _controller
-        .dispose(); // Dispose the controller when the widget is removed from the widget tree
+    _controller.dispose();
     super.dispose();
   }
 }

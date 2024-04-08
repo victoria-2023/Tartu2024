@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'models/attraction.dart';
 import 'attraction_details_page.dart';
 import 'package:tartu2024/models/attractions_data.dart';
 import 'settings.dart';
