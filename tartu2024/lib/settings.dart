@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text('Dark Mode'),
             value: Theme.of(context).brightness == Brightness.dark,
             onChanged: (bool value) {
-              // Implement your dark/light mode toggle here
+              // Implement dark/light mode toggle here
             },
           ),
           // Add other settings here
