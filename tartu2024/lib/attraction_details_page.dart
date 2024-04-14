@@ -1,34 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/attraction.dart'; // Adjust the import path as necessary
 import 'map_page.dart'; // Adjust the import path as necessary
-
-Future<String> fetchDescriptionFromWikipedia(String attractionName) async {
-  final query = Uri.encodeComponent(attractionName);
-  final url = Uri.parse(
-      'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=$query');
-
-  try {
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final pages = data['query']['pages'];
-      if (pages != null) {
-        final page = pages[pages.keys.first];
-        if (page != null && page['extract'] != null) {
-          return page['extract'];
-        }
-      }
-      return 'No description available';
-    } else {
-      throw Exception('Failed to load description');
-    }
-  } catch (e) {
-    return 'Failed to fetch data: $e';
-  }
-}
 
 class AttractionDetailsPage extends StatefulWidget {
   final Attraction attraction;
@@ -40,37 +14,29 @@ class AttractionDetailsPage extends StatefulWidget {
 }
 
 class _AttractionDetailsPageState extends State<AttractionDetailsPage> {
-  String description =
-      'Loading description...'; // Placeholder text for loading state
-  bool _isLiked = false; // Initial like state
+  bool _isLiked = false;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
-    fetchDescriptionFromWikipedia(widget.attraction.name).then((desc) {
-      setState(() {
-        description = desc; // Update the description on fetch success
-      });
-    }).catchError((error) {
-      setState(() {
-        description =
-            'Failed to load description'; // Handle errors in fetching description
-      });
-    });
+    _loadLikedState();
   }
 
-  void _toggleLike() {
+  Future<void> _loadLikedState() async {
+    prefs = await SharedPreferences.getInstance();
+    bool? likedStatus = prefs.getBool(widget.attraction.name);
     setState(() {
-      _isLiked = !_isLiked; // Toggle the liked state
+      _isLiked = likedStatus ?? false;
     });
   }
 
-  void _showMapPage() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MapPage(attraction: widget.attraction),
-      ),
-    );
+  void _toggleLikedStatus() async {
+    setState(() {
+      _isLiked = !_isLiked; // Toggle the like status
+    });
+    await prefs.setBool(widget.attraction.name,
+        _isLiked); // Save the new state in SharedPreferences
   }
 
   @override
@@ -80,9 +46,9 @@ class _AttractionDetailsPageState extends State<AttractionDetailsPage> {
         title: Text(widget.attraction.name),
         actions: <Widget>[
           IconButton(
-            icon: Icon(_isLiked ? Icons.favorite : Icons.favorite_border),
-            color: _isLiked ? Colors.red : null,
-            onPressed: _toggleLike,
+            icon: Icon(_isLiked ? Icons.favorite : Icons.favorite_border,
+                color: _isLiked ? Colors.red : null),
+            onPressed: _toggleLikedStatus,
           ),
           IconButton(
             icon: Icon(Icons.share),
@@ -95,18 +61,58 @@ class _AttractionDetailsPageState extends State<AttractionDetailsPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(widget.attraction.imageUrl),
+            Image.network(
+              widget.attraction.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(
+                  Icons.broken_image,
+                  size: 200,
+                );
+              },
+            ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
-                  description), // Displaying the fetched or placeholder description
+                widget.attraction.description,
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
-            ElevatedButton(
-              onPressed: _showMapPage, // Navigates to the MapPage
-              child: Text('Get Directions'),
+            ListTile(
+              leading: Icon(Icons.location_on),
+              title: Text(widget.attraction.address),
             ),
-            // Additional details or widgets here as needed
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text(widget.attraction.visitingHours),
+            ),
+            ListTile(
+              leading: Icon(Icons.directions),
+              title: Text(widget.attraction.directions),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MapPage(attraction: widget.attraction),
+                    ),
+                  );
+                },
+                child: Text('Get Directions'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  textStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),
