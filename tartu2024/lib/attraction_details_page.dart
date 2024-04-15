@@ -1,146 +1,115 @@
-// I'm importing necessary Flutter material components, a sharing package to share content, and a package to store simple data persistently.
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-// I'm also importing custom classes. One is for modeling an attraction, and the other is for a page showing a map.
 import '../models/attraction.dart';
 import 'map_page.dart';
+import 'database_helper.dart'; // Make sure to import your DatabaseHelper
 
-// I'm defining a StatefulWidget because the details of an attraction can change, like whether it's liked.
 class AttractionDetailsPage extends StatefulWidget {
-  final Attraction
-      attraction; // This will hold the attraction data passed to this page.
+  final Attraction attraction;
 
-  AttractionDetailsPage(
-      {required this.attraction}); // I'm using a constructor to pass the attraction data.
+  AttractionDetailsPage({required this.attraction});
 
   @override
-  _AttractionDetailsPageState createState() =>
-      _AttractionDetailsPageState(); // I'm creating its stateful part.
+  _AttractionDetailsPageState createState() => _AttractionDetailsPageState();
 }
 
 class _AttractionDetailsPageState extends State<AttractionDetailsPage> {
-  bool _isLiked =
-      false; // I'm starting with the assumption that the attraction isn't liked.
-  late SharedPreferences
-      prefs; // This will be used to save and load preferences like the liked status.
+  bool _isLiked = false;
+  late DatabaseHelper _databaseHelper; // Instance of your database helper
 
   @override
   void initState() {
-    super
-        .initState(); // Always call this first in initState to ensure everything else works as expected.
-    _loadLikedState(); // I'm loading the liked status from storage right when the page starts.
+    super.initState();
+    _databaseHelper = DatabaseHelper.instance; // Initialize the database helper
+    _loadLikedState();
   }
 
   Future<void> _loadLikedState() async {
-    prefs = await SharedPreferences
-        .getInstance(); // Here I'm getting an instance of SharedPreferences.
-    bool? likedStatus = prefs.getBool(widget.attraction
-        .name); // I'm trying to load the liked status using the attraction's name as a key.
+    bool? likedStatus =
+        await _databaseHelper.getFavorite(widget.attraction.name);
     setState(() {
-      _isLiked = likedStatus ??
-          false; // I update _isLiked. If likedStatus is null, default to false.
+      _isLiked =
+          likedStatus ?? false; // Update the liked status based on the database
     });
   }
 
   void _toggleLikedStatus() async {
     setState(() {
-      _isLiked = !_isLiked; // I toggle the liked status.
+      _isLiked = !_isLiked; // Toggle the liked status
     });
-    await prefs.setBool(widget.attraction.name,
-        _isLiked); // Then, I save the new liked status in SharedPreferences.
+    await _databaseHelper.addOrUpdateFavorite(widget.attraction.name,
+        _isLiked); // Save the new status to the database
   }
 
   @override
   Widget build(BuildContext context) {
-    // This builds the UI of the page.
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.attraction
-            .name), // The title of the AppBar is the name of the attraction.
+        title: Text(widget.attraction.name),
         actions: <Widget>[
           IconButton(
             icon: Icon(
-                _isLiked
-                    ? Icons.favorite
-                    : Icons
-                        .favorite_border, // I change the icon based on whether it's liked.
-                color: _isLiked
-                    ? Colors.red
-                    : null), // Red if liked, no color if not.
-            onPressed:
-                _toggleLikedStatus, // When pressed, it toggles the liked status.
+              _isLiked ? Icons.favorite : Icons.favorite_border,
+              color: _isLiked ? Colors.red : null,
+            ),
+            onPressed: _toggleLikedStatus,
           ),
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
               Share.share(
-                  'Check out this attraction: ${widget.attraction.name}'); // This allows sharing the attraction's name.
+                  'Check out this attraction: ${widget.attraction.name}');
             },
           ),
         ],
       ),
       body: SingleChildScrollView(
-        // This allows the body to scroll if there's not enough space.
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              widget.attraction.imageUrl, // Display the image from a URL.
-              fit: BoxFit
-                  .cover, // The image covers the space without distorting aspect ratio.
-              errorBuilder: (context, error, stackTrace) {
-                // If the image fails to load, show an icon instead.
-                return Icon(
-                  Icons.broken_image,
-                  size: 200,
-                );
-              },
+              widget.attraction.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.broken_image,
+                size: 200,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                widget.attraction.description, // Description of the attraction.
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6, // Styling the text with the headline6 style from the theme.
+                widget.attraction.description,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
             ListTile(
               leading: Icon(Icons.location_on),
-              title: Text(widget.attraction
-                  .address), // Showing the address of the attraction.
+              title: Text(widget.attraction.address),
             ),
             ListTile(
               leading: Icon(Icons.access_time),
-              title: Text(
-                  widget.attraction.visitingHours), // Showing visiting hours.
+              title: Text(widget.attraction.visitingHours),
             ),
             ListTile(
               leading: Icon(Icons.directions),
-              title: Text(widget
-                  .attraction.directions), // Directions to the attraction.
+              title: Text(widget.attraction.directions),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => MapPage(
-                          attraction: widget
-                              .attraction), // Navigates to a map page with the attraction.
+                      builder: (context) =>
+                          MapPage(attraction: widget.attraction),
                     ),
                   );
                 },
-                child: Text('Get Directions'), // Button text.
+                child: Text('Get Directions'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Button color.
-                  textStyle: TextStyle(color: Colors.white), // Text color.
+                  backgroundColor: Colors.blue,
+                  textStyle: TextStyle(color: Colors.white),
                 ),
               ),
             ),

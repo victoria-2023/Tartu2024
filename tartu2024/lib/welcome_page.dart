@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'main.dart'; // Make sure this points to your file with AttractionsListPage.
+import 'app_localizations.dart'; // Ensure this is correctly imported.
 
 class WelcomePage extends StatelessWidget {
+  final Function(Locale) onLocaleChange;
+
+  WelcomePage({required this.onLocaleChange});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        // Wrap your content with SafeArea
         child: Column(
           children: [
             Container(
@@ -19,7 +23,7 @@ class WelcomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "LET'S EXPLORE",
+                    AppLocalizations.of(context).translate("lets_explore"),
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -27,7 +31,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "TARTU2024",
+                    AppLocalizations.of(context).translate("city_name"),
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.blue,
@@ -36,7 +40,8 @@ class WelcomePage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     child: Text(
-                      "Tartu: A Haven for Explorers - Unlock Adventure, Wellness, and Serenity in Estonia's Playground!",
+                      AppLocalizations.of(context)
+                          .translate("city_description"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -78,11 +83,17 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'ENTER',
+                          AppLocalizations.of(context)
+                              .translate("enter_button"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    child: LanguageDropdown(
+                        onLocaleChange: onLocaleChange), // Language dropdown
                   ),
                 ],
               ),
@@ -94,6 +105,48 @@ class WelcomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LanguageDropdown extends StatefulWidget {
+  final Function(Locale) onLocaleChange;
+
+  LanguageDropdown({required this.onLocaleChange});
+
+  @override
+  _LanguageDropdownState createState() => _LanguageDropdownState();
+}
+
+class _LanguageDropdownState extends State<LanguageDropdown> {
+  String _selectedLanguage = 'en'; // Default language code
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: _selectedLanguage,
+      onChanged: (String? newValue) {
+        if (newValue != null) {
+          setState(() {
+            _selectedLanguage = newValue;
+          });
+          widget.onLocaleChange(Locale(newValue));
+        }
+      },
+      items: [
+        DropdownMenuItem<String>(
+          value: 'en',
+          child: Text('English'),
+        ),
+        DropdownMenuItem<String>(
+          value: 'fr',
+          child: Text('French'),
+        ),
+        DropdownMenuItem<String>(
+          value: 'pl',
+          child: Text('Polish'),
+        ),
+      ],
     );
   }
 }
@@ -111,7 +164,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     super.initState();
     _controller = VideoPlayerController.asset('assets/welcome_video.mp4')
       ..initialize().then((_) {
-        setState(() {}); // Rebuild the widget after video is initialized.
+        setState(() {}); // Rebuild the widget after the video is initialized.
         _controller.play();
         _controller.setLooping(true);
       });

@@ -4,19 +4,45 @@ import 'attraction_details_page.dart';
 import 'package:tartu2024/models/attractions_data.dart';
 import 'settings.dart';
 import 'welcome_page.dart';
+import 'app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "google.env"); // Load the environment variables
+  await dotenv.load(fileName: "google.env");
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = Locale('en', ''); // Default locale
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Now you can use the environment variables throughout your app
     return MaterialApp(
       title: 'Tartu2024 City Guide',
-      home: WelcomePage(),
+      locale: _locale, // Use the _locale for the MaterialApp
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('pl', ''),
+        Locale('fr', ''),
+      ],
+      home: WelcomePage(onLocaleChange: setLocale),
     );
   }
 }
@@ -36,7 +62,8 @@ class AttractionsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tartu2024 City Guide"),
+        title: Text(
+            AppLocalizations.of(context).translate("Tartu2024 City Guide")),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -52,7 +79,8 @@ class AttractionsListPage extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: Card(
               child: ListTile(
-                title: Text(attraction.name),
+                title:
+                    Text(attraction.name), // Consider localizing this if needed
                 leading: Container(
                   width: 100,
                   height: 100,

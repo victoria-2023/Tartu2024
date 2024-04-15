@@ -5,14 +5,13 @@ import 'package:intl/intl.dart';
 
 class AppLocalizations {
   final Locale locale;
+  Map<String, String> _localizedStrings = {}; // Initialized with an empty map
 
   AppLocalizations(this.locale);
 
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
-
-  Map<String, String> _localizedStrings;
 
   Future<bool> load() async {
     String jsonString =
@@ -32,4 +31,23 @@ class AppLocalizations {
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) =>
+      ['en', 'pl', 'fr'].contains(locale.languageCode);
+
+  @override
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations localizations = new AppLocalizations(locale);
+    await localizations.load();
+    return localizations;
+  }
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
 }

@@ -21,6 +21,8 @@ dependencies:
   http: ^1.2.1
   flutter_dotenv: ^5.0.2
   shared_preferences: ^2.0.8
+  sqflite: ^2.0.0+4
+  path_provider: ^2.0.2
   
 dev_dependencies:
   flutter_test:
@@ -35,6 +37,9 @@ flutter:
   assets:
     - assets/welcome_image.jpg
     - assets/welcome_video.mp4
+    - lang/en.json
+    - lang/pl.json
+    - lang/fr.json
     - google.env
     
     
