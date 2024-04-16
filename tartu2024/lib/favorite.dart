@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/attraction.dart'; // Adjust the import path as necessary
-import 'attraction_details_page.dart'; // Adjust the import path as necessary
+import '../models/attraction.dart';
+import 'attraction_details_page.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final List<Attraction> attractions;

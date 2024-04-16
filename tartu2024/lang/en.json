@@ -5,6 +5,159 @@
     "lets_explore": "LET'S EXPLORE",
     "city_name": "TARTU2024",
     "city_description": "Tartu: A Haven for Explorers - Unlock Adventure, Wellness, and Serenity in Estonia's Playground!",
-    "enter_button": "ENTER"
+    "enter_button": "ENTER",
     
+    "attractions": {
+      "tartu_hall_square": {
+        "name": "Tartu Hall Square",
+        "description": "Immerse yourself in the historic charm of Tartu. Stroll through its heart, adorned with magnificent architecture and vibrant ambiance, offering a glimpse into the city's rich cultural heritage.",
+        "address": "Raekoja plats, 51004 Tartu",
+        "visiting_hours": "9:00 - 18:00",
+        "directions": "Located in the heart of Tartu, easily accessible by public transport."
+      },
+      "university_of_tartu_museum": {
+        "name": "University of Tartu Museum",
+        "description": "Step into the corridors of Estonia's oldest university and unravel centuries of academic excellence through captivating exhibits and artifacts, promising an enlightening journey through the nation's scholarly legacy.",
+        "address": "Ülikooli 18, 50090 Tartu, Estonia",
+        "visiting_hours": "10:00 - 17:00, closed on Mondays",
+        "directions": "Situated atop Toome Hill, a landmark location in Tartu."
+      },
+      "tartu_cathedral": {
+        "name": "Tartu Cathedral",
+        "description": "Discover the haunting beauty of a medieval marvel, where the echoes of history resonate through the Gothic ruins, now transformed into a captivating museum, offering a window into Tartu's past.",
+        "address": "Lossi 25, Tartu, Estonia",
+        "visiting_hours": "11:00 - 16:00, varies by season",
+        "directions": "Accessible via Lossi Street, on Toome Hill."
+      },
+      "botanical_gardens_university_of_tartu": {
+        "name": "Botanical Gardens of the University of Tartu",
+        "description": "Lose yourself in a botanical wonderland, where thousands of plant species intertwine in a harmonious dance of colors and scents, providing a serene escape in the heart of the city.",
+        "address": "Lai 38, 51005 Tartu, Estonia",
+        "visiting_hours": "9:00 - 19:00",
+        "directions": "Located near the city center, adjacent to the Emajõgi River."
+      },
+      "ahhaa_science_centre": {
+        "name": "AHHAA Science Centre",
+        "description": "Ignite your curiosity and engage your senses in a world of scientific wonders, where interactive exhibits and awe-inspiring planetarium shows promise an immersive experience for all ages.",
+        "address": "Sadama 1, 51004 Tartu, Estonia",
+        "visiting_hours": "10:00 - 19:00",
+        "directions": "Found in the city's heart, easily reachable from the main square."
+      },
+      "estonian_national_museum": {
+        "name": "Estonian National Museum",
+        "description": "Embark on a captivating journey through Estonia's cultural tapestry, as diverse exhibits and immersive displays unfold the nation's fascinating history and vibrant heritage.",
+        "address": "Muuseumi tee 2, 60532 Tartu, Estonia",
+        "visiting_hours": "10:00 - 18:00, closed on Tuesdays",
+        "directions": "Located on the outskirts of Tartu, accessible by public bus or car."
+      },
+      "toome_hill_park": {
+        "name": "Toome Hill Park",
+        "description": "Ascend to breathtaking heights and savor panoramic views of Tartu from this historic park, where tranquil paths wind through lush greenery, offering a serene retreat for contemplation and relaxation.",
+        "address": "Toome Hill, Tartu, Estonia",
+        "visiting_hours": "Open 24 hours",
+        "directions": "Easily reachable from the city center by foot."
+      },
+      "tartu_toy_museum": {
+        "name": "Tartu Toy Museum",
+        "description": "Delve into a world of nostalgia and wonder as you explore a charming collection of historic and modern toys, evoking memories and sparking joy for visitors of all ages.",
+        "address": "Lutsu 8, 51006 Tartu, Estonia",
+        "visiting_hours": "11:00 - 18:00, closed on Mondays and Tuesdays",
+        "directions": "Located in the Old Town, a short walk from the main square."
+      },
+      "tartu_art_museum": {
+        "name": "Tartu Art Museum",
+        "description": "Immerse yourself in the soul-stirring beauty of Estonian art, spanning centuries of creativity and expression, housed within the heart of the Old Town, a treasure trove for art enthusiasts.",
+        "address": "Raekoja plats 18, 51004 Tartu, Estonia",
+        "visiting_hours": "11:00 - 18:00, closed on Mondays",
+        "directions": "Situated in the heart of the Old Town, in the main square."
+      },
+      "angels_bridge": {
+        "name": "Angel’s Bridge",
+        "description": "Cross the threshold into a realm of timeless beauty and architectural grace, as this historic bridge connects the enchanting Toome Hill with the picturesque Old Town, offering vistas that inspire the soul.",
+        "address": "Angel’s Bridge, Toome Hill, Tartu, Estonia",
+        "visiting_hours": "Open 24 hours",
+        "directions": "Crosses over Lossi Street, connecting the city center to Toome Hill."
+      },
+
+      "emajogi_river_promenade": {
+        "name": "Emajõgi River Promenade",
+        "description": "Experience the tranquil beauty of Tartu as you stroll along the banks of the Emajõgi River, where serene waters mirror the city's enchanting skyline, inviting moments of peaceful contemplation.",
+        "address": "Emajõe 1, 51004 Tartu, Estonia",
+        "visiting_hours": "Open 24 hours",
+        "directions": "Accessible from various points in the city center, offering picturesque views."
+      },
+
+      
+      
+      "tartu_city_museum": {
+        "name": "Tartu City Museum",
+        "description": "Embark on a journey through Tartu's past, as the city museum showcases artifacts and stories that weave together the tapestry of its history, offering insight into its evolution and cultural significance.",
+        "imageUrl": "https://static.visitestonia.com/images/3537658/Tartu+City+Museum+-+visittartu-visitestonia1_.jpeg",
+        "address": "Ülikooli 1, 51003 Tartu, Estonia",
+        "visitingHours": "10:00 - 18:00, closed on Mondays",
+        "directions": "Located near the Town Hall Square, easily accessible from the city center.",
+        "latitude": 58.3814,
+        "longitude": 26.7199,
+        "placeId": "PLACE_ID_12"
+      },
+      
+      "st_johns_church": {
+        "name": "St. John's Church",
+        "description": "Marvel at the grandeur of St. John's Church, a symbol of Tartu's religious heritage and architectural prowess, where centuries of history are etched into its sacred walls, inviting reverence and contemplation.",
+        "imageUrl": "https://static.visitestonia.com/images/3387767/st-johns-church-visittartu-estonia_.jpg",
+        "address": "Jaani 5, 51007 Tartu, Estonia",
+        "visitingHours": "9:00 - 17:00",
+        "directions": "Located in the city center, near the University of Tartu, easily accessible by foot.",
+        "latitude": 58.3827,
+        "longitude": 26.7201,
+        "placeId": "PLACE_ID_13"
+    },
+    "tartu_market_square": {
+        "name": "Tartu Market Square",
+        "description": "Indulge in the vibrant atmosphere of Tartu Market Square, where bustling stalls offer a cornucopia of local delights, from fresh produce to artisanal crafts, creating a sensory feast for visitors.",
+        "imageUrl": "https://static.visitestonia.com/images/3539409/Tartu+Farmers+Market-Visit-Tartu_.JPG",
+        "address": "Turuplats 6, 51004 Tartu, Estonia",
+        "visitingHours": "Varies by market days",
+        "directions": "Located in the city center, adjacent to Tartu Town Hall, easily accessible on foot.",
+        "latitude": 58.3814,
+        "longitude": 26.7199,
+        "placeId": "PLACE_ID_15"
+    },
+
+    "estonian_sports_museum": {
+        "name": "Estonian Sports Museum",
+        "description": "Celebrate the spirit of athleticism at the Estonian Sports Museum, where exhibits honor the nation's sporting heroes and showcase the triumphs and challenges of Estonia's sporting history.",
+        "imageUrl": "https://static.visitestonia.com/images/3705039/Eesti+Spordi-+ja+Ol%C3%BCmpiamuuseum+%2813%29_.jpg",
+        "address": "Rüütli 15, 51007 Tartu, Estonia",
+        "visitingHours": "10:00 - 18:00, closed on Mondays",
+        "directions": "Located near the city center, easily accessible from Tartu Cathedral.",
+        "latitude": 58.3814,
+        "longitude": 26.7199,
+        "placeId": "PLACE_ID_16"
+    },
+
+    "tartu_observatory_museum": {
+        "name": "Tartu Observatory Museum",
+        "description": "Journey through the annals of scientific discovery at the Tartu Observatory Museum, where astronomical artifacts and exhibits chronicle the institution's legacy of exploration and innovation.",
+        "imageUrl": "https://visittartu.com/sites/default/files/vemedia/2509_745c22a529f534abbc1c9b0a5d27e480.jpg",
+        "address": "Tõravere 61602, Tartu County, Estonia",
+        "visitingHours": "10:00 - 17:00, closed on Mondays",
+        "directions": "Located near Tartu Observatory, accessible by car or public transportation.",
+        "latitude": 58.3814,
+        "longitude": 26.7199,
+        "placeId": "PLACE_ID_18"
+
+    },
+      
+    "tartu_cathedral_bell_tower": {
+        "name": "Tartu Cathedral Bell Tower",
+        "description": "Ascend to new heights and witness panoramic views of Tartu from the historic Cathedral Bell Tower, where the city's skyline unfolds before your eyes, offering a mesmerizing backdrop for memorable moments.",
+        "imageUrl": "https://muuseum.ut.ee/sites/default/files/styles/max_1300x1300/public/2022-11/_H5A5775.jpg?itok=iWBjQjKi",
+        "address": "Lossi 25, Tartu, Estonia",
+        "visitingHours": "10:00 - 18:00",
+        "directions": "Accessible via Lossi Street, adjacent to Tartu Cathedral."
   }
+
+}
+
+}

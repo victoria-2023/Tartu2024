@@ -6,10 +6,13 @@ import 'settings.dart';
 import 'welcome_page.dart';
 import 'app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'models/attraction.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "google.env");
-  runApp(MyApp());
+  await dotenv.load(
+      fileName:
+          "google.env"); // Load environment variables from google.env file
+  runApp(MyApp()); // Run the main application widget
 }
 
 class MyApp extends StatefulWidget {
@@ -18,11 +21,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = Locale('en', ''); // Default locale
+  Locale _locale = Locale('en', ''); // Default locale is English
 
   void setLocale(Locale locale) {
     setState(() {
-      _locale = locale;
+      _locale = locale; // Update the locale when setLocale is called
     });
   }
 
@@ -38,11 +41,13 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
-        Locale('en', ''),
-        Locale('pl', ''),
-        Locale('fr', ''),
+        Locale('en', ''), // English locale
+        Locale('pl', ''), // Polish locale
+        Locale('fr', ''), // French locale
       ],
-      home: WelcomePage(onLocaleChange: setLocale),
+      home: WelcomePage(
+          onLocaleChange:
+              setLocale), // Initial page is WelcomePage with language change callback
     );
   }
 }
@@ -52,7 +57,7 @@ class AttractionsListPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return SettingsPage();
+          return SettingsPage(); // Navigate to the SettingsPage when settings icon is pressed
         },
       ),
     );
@@ -62,40 +67,44 @@ class AttractionsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            AppLocalizations.of(context).translate("Tartu2024 City Guide")),
+        title: Text(AppLocalizations.of(context).translate(
+            "Tartu2024 City Guide")), // Translate the app title using AppLocalizations
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => _openSettings(context),
+            onPressed: () => _openSettings(
+                context), // Open settings page on settings icon press
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: attractions.length,
+        itemCount: attractions.length, // Number of attractions in the list
         itemBuilder: (context, index) {
-          final attraction = attractions[index];
+          final attraction =
+              attractions[index]; // Get the attraction at the current index
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: Card(
               child: ListTile(
                 title:
-                    Text(attraction.name), // Consider localizing this if needed
+                    Text(attraction.name), // Display the name of the attraction
                 leading: Container(
                   width: 100,
                   height: 100,
                   child: Image.network(
-                    attraction.imageUrl, fit: BoxFit.cover,
+                    attraction.imageUrl, // Display the image of the attraction
+                    fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
-                        Icon(Icons.error), // Error handling for image loading
+                        Icon(Icons.error), // Handle image loading errors
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          AttractionDetailsPage(attraction: attraction),
+                      builder: (context) => AttractionDetailsPage(
+                          attraction:
+                              attraction), // Navigate to attraction details page on tap
                     ),
                   );
                 },

@@ -7,7 +7,7 @@ class Attraction {
   final double latitude;
   final double longitude;
   final String placeId;
-  String description; // Make this non-final if it needs to be updated
+  String description;
 
   Attraction({
     required this.name,

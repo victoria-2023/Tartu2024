@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'main.dart'; // Make sure this points to your file with AttractionsListPage.
-import 'app_localizations.dart'; // Ensure this is correctly imported.
+import 'main.dart'; // Making sure this points to my file with AttractionsListPage.
+import 'app_localizations.dart'; // Ensuring this is correctly imported.
 
 class WelcomePage extends StatelessWidget {
   final Function(Locale) onLocaleChange;
@@ -93,14 +93,15 @@ class WelcomePage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                     child: LanguageDropdown(
-                        onLocaleChange: onLocaleChange), // Language dropdown
+                        onLocaleChange:
+                            onLocaleChange), // Here's the language dropdown for you linguists
                   ),
                 ],
               ),
             ),
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: VideoPlayerScreen(), // The Video Player section
+              child: VideoPlayerScreen(), // Time for some video fun!
             ),
           ],
         ),
@@ -119,7 +120,8 @@ class LanguageDropdown extends StatefulWidget {
 }
 
 class _LanguageDropdownState extends State<LanguageDropdown> {
-  String _selectedLanguage = 'en'; // Default language code
+  String _selectedLanguage =
+      'en'; // My default language is English - no surprise there
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +132,8 @@ class _LanguageDropdownState extends State<LanguageDropdown> {
           setState(() {
             _selectedLanguage = newValue;
           });
-          widget.onLocaleChange(Locale(newValue));
+          widget.onLocaleChange(
+              Locale(newValue)); // Bonjour! I've switched languages
         }
       },
       items: [
@@ -164,7 +167,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     super.initState();
     _controller = VideoPlayerController.asset('assets/welcome_video.mp4')
       ..initialize().then((_) {
-        setState(() {}); // Rebuild the widget after the video is initialized.
+        setState(
+            () {}); // Rebuilding the widget after the video is initialized. Fun times ahead!
         _controller.play();
         _controller.setLooping(true);
       });
@@ -173,13 +177,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
-        ? VideoPlayer(_controller)
-        : Center(child: CircularProgressIndicator());
+        ? VideoPlayer(_controller) // Let's roll the video!
+        : Center(
+            child:
+                CircularProgressIndicator()); // Loading... because good things take time
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // I'm done playing, let's clean up!
     super.dispose();
   }
 }

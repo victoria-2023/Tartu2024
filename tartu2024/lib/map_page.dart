@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import '../models/attraction.dart'; // Adjust the import path as necessary
+import '../models/attraction.dart'; //
 
 class MapPage extends StatelessWidget {
   final Attraction attraction;
@@ -16,8 +16,7 @@ class MapPage extends StatelessWidget {
       ),
       body: FlutterMap(
         options: MapOptions(
-          initialCenter:
-              LatLng(attraction.latitude, attraction.longitude), // Updated here
+          initialCenter: LatLng(attraction.latitude, attraction.longitude),
           initialZoom: 14.0,
         ),
         children: [
