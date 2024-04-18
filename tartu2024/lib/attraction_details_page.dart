@@ -1,107 +1,118 @@
-import 'package:flutter/material.dart'; // I'm bringing in tools to make our app look nice
-import 'package:share/share.dart'; // I'm importing a tool to help us share stuff easily
-import '../models/attraction.dart'; // I'm getting a blueprint for our attractions
-import 'map_page.dart'; // I'm using a tool to find directions on a map
-import 'database_helper.dart'; // I have a friend to help me manage our list of favorite attractions
+import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import '../models/attraction.dart';
+import 'map_page.dart';
+import 'database_helper.dart'; // Make sure to import your DatabaseHelper
 
 class AttractionDetailsPage extends StatefulWidget {
-  // I'm creating a special page to show attraction details
-  final Attraction
-      attraction; // Here's where I keep all the details about one attraction
+  final Attraction attraction;
 
-  AttractionDetailsPage(
-      {required this.attraction}); // When you tell me which attraction to show, I set up the page
+  AttractionDetailsPage({required this.attraction});
 
   @override
-  _AttractionDetailsPageState createState() =>
-      _AttractionDetailsPageState(); // I create a special manager for this page
+  _AttractionDetailsPageState createState() => _AttractionDetailsPageState();
 }
 
 class _AttractionDetailsPageState extends State<AttractionDetailsPage> {
-  // I'll help manage the attraction details page
-  bool _isLiked =
-      false; // I'll keep track of whether we like this attraction or not
-  late DatabaseHelper
-      _databaseHelper; // I have a friend to help me manage our list of favorite attractions
+  bool _isLiked = false;
+  late DatabaseHelper _databaseHelper; // Instance of your database helper
 
   @override
   void initState() {
-    // I get everything ready when we first show the attraction details
     super.initState();
-    _databaseHelper = DatabaseHelper
-        .instance; // My friend is ready to help me with our list of favorite attractions
-    _loadLikedState(); // I check if we've liked this attraction before
+    _databaseHelper = DatabaseHelper.instance; // Initialize the database helper
+    _loadLikedState();
   }
 
   Future<void> _loadLikedState() async {
-    // I check if we've liked this attraction before
-    bool? likedStatus = await _databaseHelper.getFavorite(
-        widget.attraction.name); // I peek into our list of favorite attractions
+    bool? likedStatus =
+        await _databaseHelper.getFavorite(widget.attraction.name);
     setState(() {
-      // I update our page to show if we've liked this attraction or not
-      _isLiked = likedStatus ??
-          false; // I make sure we know if we like this attraction or not
+      _isLiked =
+          likedStatus ?? false; // Update the liked status based on the database
     });
   }
 
   void _toggleLikedStatus() async {
-    // I changed our mind about liking or unliking this attraction
     setState(() {
-      _isLiked =
-          !_isLiked; // I switch between liking and unliking the attraction
+      _isLiked = !_isLiked; // Toggle the liked status
     });
-    await _databaseHelper.addOrUpdateFavorite(
-        // I saved our decision about liking or unliking the attraction
-        widget.attraction.name,
-        _isLiked);
+    await _databaseHelper.addOrUpdateFavorite(widget.attraction.name,
+        _isLiked); // Save the new status to the database
   }
 
   @override
   Widget build(BuildContext context) {
-    // I set up how our page will look
     return Scaffold(
-      // I created a layout for our page
       appBar: AppBar(
-        // I set up the top part of our page, like a title and buttons
-        title: Text(widget
-            .attraction.name), // I show the name of the attraction at the top
+        title: Text(widget.attraction.name),
         actions: <Widget>[
-          // I added buttons at the top, like a heart to like the attraction or a share button
           IconButton(
-            // I set up a heart button to like or unlike the attraction
             icon: Icon(
-              // I show a heart icon
-              _isLiked
-                  ? Icons.favorite
-                  : Icons
-                      .favorite_border, // I decide if the heart should be filled or just an outline
-              color: _isLiked
-                  ? Colors.red
-                  : null, // I make the heart red if we like the attraction, or just the default color
+              _isLiked ? Icons.favorite : Icons.favorite_border,
+              color: _isLiked ? Colors.red : null,
             ),
-            onPressed:
-                _toggleLikedStatus, // I make the heart button work, so we can like or unlike the attraction
+            onPressed: _toggleLikedStatus,
           ),
           IconButton(
-            // I set up a button to share the attraction details
-            icon: Icon(Icons.share), // I show an icon for sharing
+            icon: Icon(Icons.share),
             onPressed: () {
-              // I make the share button work, so we can share the attraction details with friends
               Share.share(
-                  'Check out this attraction: ${widget.attraction.name}'); // I share the name of the attraction
+                  'Check out this attraction: ${widget.attraction.name}');
             },
           ),
         ],
       ),
       body: SingleChildScrollView(
-        // I make sure we can scroll down if there's lots of details about the attraction
         child: Column(
-          // I set up how the attraction details will look like
-          crossAxisAlignment: CrossAxisAlignment
-              .start, // I align the details to the left side of the screen
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // I will show different details about the attraction, like its picture, description, and location
-            // Here I'll add details about the attraction
+            Image.network(
+              widget.attraction.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.broken_image,
+                size: 200,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                widget.attraction.description,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.location_on),
+              title: Text(widget.attraction.address),
+            ),
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text(widget.attraction.visitingHours),
+            ),
+            ListTile(
+              leading: Icon(Icons.directions),
+              title: Text(widget.attraction.directions),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MapPage(attraction: widget.attraction),
+                    ),
+                  );
+                },
+                child: Text('Get Directions'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  textStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),

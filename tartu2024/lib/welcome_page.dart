@@ -11,99 +11,90 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context).translate("lets_explore"),
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate("city_name"),
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate("city_description"),
-                      textAlign: TextAlign.center,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade900, // Dark blue at the bottom
+              Colors.blue.shade300, // Lighter blue at the top
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).translate("lets_explore"),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // White text for better contrast
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                    child: Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.0),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.blue.shade900,
-                            Colors.blue.shade500,
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
+                    Text(
+                      AppLocalizations.of(context).translate("city_name"),
+                      style: TextStyle(
+                        fontSize: 36,
+                        color: Colors.white, // White text for better contrast
                       ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AttractionsListPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)
-                              .translate("enter_button"),
-                          style: TextStyle(color: Colors.white),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate("city_description"),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white, // White text for better contrast
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                    child: LanguageDropdown(
-                        onLocaleChange:
-                            onLocaleChange), // Here's the language dropdown for you linguists
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: VideoPlayerScreen(), // Time for some video fun!
-            ),
-          ],
+              Expanded(
+                flex: 3,
+                child: Image.asset(
+                  'assets/welcome_image.jpg', // Use the local asset image
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AttractionsListPage(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Button color
+                    disabledBackgroundColor: Colors.white, // Text color
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context).translate("enter_button"),
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: LanguageDropdown(onLocaleChange: onLocaleChange),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -120,8 +111,7 @@ class LanguageDropdown extends StatefulWidget {
 }
 
 class _LanguageDropdownState extends State<LanguageDropdown> {
-  String _selectedLanguage =
-      'en'; // My default language is English - no surprise there
+  String _selectedLanguage = 'en'; // Default language is English
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +122,7 @@ class _LanguageDropdownState extends State<LanguageDropdown> {
           setState(() {
             _selectedLanguage = newValue;
           });
-          widget.onLocaleChange(
-              Locale(newValue)); // Bonjour! I've switched languages
+          widget.onLocaleChange(Locale(newValue));
         }
       },
       items: [
