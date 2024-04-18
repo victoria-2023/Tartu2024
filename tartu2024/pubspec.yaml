@@ -24,6 +24,7 @@ dependencies:
   sqflite: ^2.0.0+4
   path_provider: ^2.0.2
   country_code_picker: ^2.0.0
+  webfeed: ^0.7.0
   
 dev_dependencies:
   flutter_test:
@@ -37,11 +38,29 @@ flutter:
   uses-material-design: true
   assets:
     - assets/welcome_image.jpg
+    - assets/welcome_image2.jpg
     - assets/welcome_video.mp4
     - lang/en.json
     - lang/pl.json
     - lang/fr.json
     - google.env
+    - assets/images/usa_flag.png
+    - assets/images/france_flag.png
+    - assets/images/poland_flag.png
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+
+dependency_overrides:
+  intl: ^0.18.1
+
     
     
   # fonts:

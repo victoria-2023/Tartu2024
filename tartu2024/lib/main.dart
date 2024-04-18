@@ -80,11 +80,6 @@ class _AttractionsListPageState extends State<AttractionsListPage> {
     });
   }
 
-  void _openSettings(BuildContext context) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) => SettingsPage()));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,59 +89,72 @@ class _AttractionsListPageState extends State<AttractionsListPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => _openSettings(context),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => SettingsPage())),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search',
-                suffixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade100, // Very light blue at the bottom (reversed)
+              Colors.blue.shade500, // Dark blue at the top (reversed)
+            ],
+            begin: Alignment.topCenter, // Start the gradient at the top
+            end: Alignment.bottomCenter, // End the gradient at the bottom
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  suffixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredAttractions.length,
-              itemBuilder: (context, index) {
-                final attraction = _filteredAttractions[index];
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(attraction.name),
-                      leading: Container(
-                        width: 100,
-                        height: 100,
-                        child: Image.network(
-                          attraction.imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Icon(Icons.error),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AttractionDetailsPage(attraction: attraction),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _filteredAttractions.length,
+                itemBuilder: (context, index) {
+                  final attraction = _filteredAttractions[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(attraction.name),
+                        leading: Container(
+                          width: 100,
+                          height: 50,
+                          child: Image.network(
+                            attraction.imageUrl,
+                            fit: BoxFit.fitHeight,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(Icons.error),
                           ),
-                        );
-                      },
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AttractionDetailsPage(attraction: attraction),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
